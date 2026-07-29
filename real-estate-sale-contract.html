@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>عقاري | عقد بيع</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:'Cairo',sans-serif;
+background:#ececec;
+padding:12px;
+
+}
+
+.page{
+
+width:210mm;
+min-height:297mm;
+background:#fff;
+margin:auto;
+padding:7mm 9mm;
+border:1px solid #000;
+
+}
+
+.header{
+
+position:relative;
+text-align:center;
+margin-bottom:8px;
+
+}
+
+.title{
+
+font-size:24px;
+font-weight:800;
+margin-top:4px;
+margin-bottom:4px;
+
+}
+
+.sub{
+
+font-size:12px;
+color:#555;
+margin-top:3px;
+
+}
+
+.section-title{
+
+font-size:17px;
+font-weight:800;
+margin-top:8px;
+margin-bottom:4px;
+
+}
+
+table{
+
+width:100%;
+border-collapse:collapse;
+margin-top:4px;
+font-size:12px;
+
+}
+
+td{
+
+border:1px solid #000;
+padding:4px;
+vertical-align:middle;
+
+}
+
+.label{
+
+font-weight:700;
+background:#fafafa;
+width:18%;
+
+}
+
+input{
+
+width:100%;
+border:none;
+outline:none;
+font-family:'Cairo',sans-serif;
+font-size:12px;
+background:transparent;
+
+}
+
+.terms{
+
+border:1px solid #000;
+padding:8px;
+margin-top:10px;
+line-height:1.7;
+font-size:12px;
+
+}
+
+.signatures{
+
+display:grid;
+grid-template-columns:1.2fr .7fr .7fr 1.2fr;
+margin-top:14px;
+border:1px solid #000;
+text-align:center;
+
+}
+
+.sign-box{
+
+border-left:1px solid #000;
+
+}
+
+.sign-box:last-child{
+
+border-left:none;
+
+}
+
+.sign-title{
+
+border-bottom:1px solid #000;
+padding:6px;
+font-weight:700;
+font-size:13px;
+
+}
+
+.sign-space{
+
+padding:24px 6px;
+
+}
+
+.buttons{
+
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:14px;
+
+}
+
+.notes{
+    width:100%;
+    height:45px;
+    border:1px solid #000;
+    resize:none;
+    font-family:'Cairo',sans-serif;
+    font-size:12px;
+    padding:5px;
+}
+
+button{
+
+background:#0f172a;
+color:#fff;
+border:none;
+padding:10px 20px;
+border-radius:8px;
+font-family:'Cairo';
+font-size:14px;
+font-weight:700;
+cursor:pointer;
+
+}
+
+button:hover{
+
+opacity:.9;
+
+}
+
+.qr-box{
+    position:absolute;
+    top:0;
+    right:0;
+    text-align:center;
+}
+
+#qrcode{
+    width:80px;
+    height:80px;
+    margin:auto;
+}
+
+.qr-text{
+    font-size:10px;
+    margin-top:4px;
+    font-weight:bold;
+    line-height:1.4;
+}
+
+@page{
+
+size:A4;
+margin:8mm;
+
+}
+
+@media print{
+
+body{
+
+background:#fff;
+padding:0;
+
+}
+
+.page{
+
+width:100%;
+min-height:auto;
+border:none;
+padding:0;
+margin:0;
+
+}
+
+.buttons{
+
+display:none;
+
+}
+
+}
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<div class="page">
+
+<div class="header">
+<div class="qr-box">
+    <div id="qrcode"></div>
+    <div class="qr-text">
+        للتحقق من صحة العقد<br>
+        مرر الكاميرا إلى هنا
+    </div>
+</div>
+
+<div class="title">
+
+عقد اتفاق بيع عقار
+<br>
+  <br>
+</div>
+
+<div class="sub" id="contractInfo">
+
+رقم العقد : جاري الإنشاء...
+
+</div>
+
+</div>
+
+<table>
+
+<tr>
+
+<td class="label">نوع العقار</td>
+
+<td>
+<input type="text" id="propertyType" placeholder="دار / شقة / محل / أرض">
+</td>
+
+<td class="label">رقم السند العقاري</td>
+
+<td>
+<input type="text" id="deedInput" oninput="fillPropertyData()">
+</td>
+
+</tr>
+
+</table>
+
+<div class="section-title">
+
+الطرف الاول ( البائع )
+</div>
+
+<table>
+
+<tr>
+
+<td class="label">اسم البائع</td>
+
+<td>
+<input type="text" id="sellerName"></td>
+
+<td class="label">رقم الهاتف</td>
+
+<td>
+<input type="text">
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">رقم الهوية</td>
+
+<td>
+<input type="text">
+</td>
+
+<td class="label">العنوان</td>
+
+<td>
+<input type="text">
+</td>
+
+</tr>
+
+</table>
+
+<div class="section-title">
+
+الطرف الثاني ( المشتري )
+</div>
+
+<table>
+
+<tr>
+
+<td class="label">اسم المشتري</td>
+
+<td>
+<input type="text" id="buyerName">
+</td>
+
+<td class="label">رقم الهاتف</td>
+
+<td>
+<input type="text">
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">رقم الهوية</td>
+
+<td>
+<input type="text">
+</td>
+
+<td class="label">العنوان</td>
+
+<td>
+<input type="text">
+</td>
+
+</tr>
+
+</table>
+
+<div class="section-title">
+
+معلومات العقار
+
+</div>
+
+<table>
+
+<tr>
+
+<td class="label">المحافظة</td>
+
+<td>
+<input type="text" id="province">
+</td>
+
+<td class="label">القضاء / الناحية</td>
+
+<td>
+<input type="text" id="district">
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">الحي / المنطقة</td>
+
+<td>
+<input type="text" id="area">
+</td>
+
+<td class="label">رقم المحلة</td>
+
+<td>
+<input type="text" id="mahalla">
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">رقم الدار / القطعة</td>
+
+<td>
+<input type="text" id="plotNumber">
+</td>
+
+<td class="label">المساحة (م²)</td>
+
+<td>
+<input type="text" id="area_size">
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">مبلغ البيع</td>
+
+<td>
+<input type="text">
+</td>
+
+<td class="label">كتابة</td>
+
+<td>
+<input type="text">
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">المبلغ الواصل</td>
+
+<td>
+<input type="text">
+</td>
+
+<td class="label">كتابة</td>
+
+<td>
+<input type="text">
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">الباقي</td>
+
+<td>
+<input type="text">
+</td>
+
+<td class="label">كتابة</td>
+
+<td>
+</td>
+
+</tr>
+
+</table>
+
+<div class="terms">
+
+1- يقر الطرف الاول (البائع) بأن العقار أعلاه مملوك له ملكية صحيحة وخالٍ من أي رهن أو حجز أو نزاع قانوني.<br>
+
+2- يقر الطرف الثاني (المشتري) بأنه قام بمعاينة العقار عياناً وقبل شراءه بحالته الراهنة.<br>
+
+3- تنتقل جميع حقوق وواجبات العقار إلى الطرف الثاني (المشتري) بعد توقيع هذا العقد.<br>
+
+4- يلتزم الطرفان بإكمال إجراءات نقل الملكية (التسجيل العقاري) حسب القوانين العراقية النافذة.<br>
+
+5- يتحمل الطرف الاول (البائع) أي التزامات مالية مستحقة على العقار (كهرباء، ماء، ضرائب) قبل تاريخ هذا العقد.<br>
+
+6- يعتبر هذا العقد ملزماً للطرفين بعد التوقيع عليه.<br>
+
+7- اي عقد غير مختوم يعتبر باطل.<br>
+
+8- لا يجوز الحك والشطب في هذا العقد.<br>
+
+9- الطرفان متعارفان ومتفقان خارج المكتب.<br>
+
+10- الملاحظات :<br>
+<textarea class="notes"></textarea>
+
+</div>
+
+<div class="signatures">
+
+<div class="sign-box">
+
+<div class="sign-title">
+الطرف الاول ( البائع )
+</div>
+
+<div class="sign-space">
+<span id="sellerSign"></span>
+<br>
+</div>
+</div>
+
+<div class="sign-box">
+
+<div class="sign-title">
+الشاهد
+</div>
+
+<div class="sign-space">
+____________
+</div>
+
+</div>
+
+<div class="sign-box">
+
+<div class="sign-title">
+الشاهد
+</div>
+
+<div class="sign-space">
+____________
+</div>
+
+</div>
+
+<div class="sign-box">
+
+<div class="sign-title">
+الطرف الثاني ( المشتري )
+</div>
+
+<div class="sign-space">
+<span id="buyerSign"></span>
+<br>
+</div>
+
+</div>
+
+</div>
+
+<div class="buttons">
+
+<button onclick="window.print()">
+
+تحميل / طباعة العقد
+
+</button>
+
+<button onclick="location.reload()">
+
+تحديث العقد
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const propertyDatabase = {
+
+"12345":{
+
+province:"بغداد",
+district:"الكرخ",
+area:"اليرموك",
+mahalla:"456",
+plotNumber:"78",
+area_size:"200"
+
+},
+
+"67890":{
+
+province:"بغداد",
+district:"الرصافة",
+area:"الكرادة",
+mahalla:"123",
+plotNumber:"45",
+area_size:"150"
+
+}
+
+};
+
+function fillPropertyData(){
+
+const deed =
+document.getElementById("deedInput").value.trim();
+
+const data = propertyDatabase[deed];
+
+if(data){
+
+document.getElementById("province").value = data.province;
+document.getElementById("district").value = data.district;
+document.getElementById("area").value = data.area;
+document.getElementById("mahalla").value = data.mahalla;
+document.getElementById("plotNumber").value = data.plotNumber;
+document.getElementById("area_size").value = data.area_size;
+
+}
+
+}
+
+function generateContractInfo(){
+
+const now = new Date();
+
+const year = now.getFullYear();
+
+const month =
+String(now.getMonth() + 1).padStart(2,'0');
+
+const day =
+String(now.getDate()).padStart(2,'0');
+
+const hours =
+String(now.getHours()).padStart(2,'0');
+
+const minutes =
+String(now.getMinutes()).padStart(2,'0');
+
+const contractNumber =
+`${year}${month}${day}-${hours}${minutes}`;
+
+const contractDate =
+`${day}/${month}/${year}`;
+
+document.getElementById("contractInfo").innerHTML =
+
+`رقم العقد : RE-${contractNumber}
+&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+تاريخ العقد : ${contractDate}`;
+
+document.getElementById("qrcode").innerHTML = "";
+
+const contractId = "RE-" + contractNumber;
+
+const verifyLink =
+`https://shassiha.github.io/real-estate-contracts/verify.html?id=${encodeURIComponent(contractId)}&date=${encodeURIComponent(contractDate)}`;
+
+new QRCode(document.getElementById("qrcode"), {
+    text: verifyLink,
+    width: 80,
+    height: 80
+});
+
+document.getElementById("sellerName").addEventListener("input", function(){
+    document.getElementById("sellerSign").innerText = this.value;
+});
+
+document.getElementById("buyerName").addEventListener("input", function(){
+    document.getElementById("buyerSign").innerText = this.value;
+});
+
+}
+
+generateContractInfo();
+
+</script>
+
+</body>
+</html>
