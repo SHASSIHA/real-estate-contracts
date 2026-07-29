@@ -440,13 +440,13 @@ display:none;
 <td class="label">مبلغ البيع</td>
 
 <td>
-<input type="text">
+<input type="text" id="saleAmount" inputmode="numeric" placeholder="مثال: 150,000,000">
 </td>
 
 <td class="label">كتابة</td>
 
 <td>
-<input type="text">
+<input type="text" id="saleAmountText" readonly>
 </td>
 
 </tr>
@@ -456,13 +456,13 @@ display:none;
 <td class="label">المبلغ الواصل</td>
 
 <td>
-<input type="text">
+<input type="text" id="receivedAmount" inputmode="numeric" placeholder="مثال: 50,000,000">
 </td>
 
 <td class="label">كتابة</td>
 
 <td>
-<input type="text">
+<input type="text" id="receivedAmountText" readonly>
 </td>
 
 </tr>
@@ -472,12 +472,13 @@ display:none;
 <td class="label">الباقي</td>
 
 <td>
-<input type="text">
+<input type="text" id="remainingAmount" inputmode="numeric">
 </td>
 
 <td class="label">كتابة</td>
 
 <td>
+<input type="text" id="remainingAmountText" readonly>
 </td>
 
 </tr>
@@ -627,6 +628,147 @@ document.getElementById("area_size").value = data.area_size;
 }
 
 }
+
+// تنسيق الرقم بإضافة فواصل الآلاف أثناء الكتابة
+function formatNumberInput(input){
+
+    let value = input.value.replace(/,/g, '').replace(/[^0-9]/g, '');
+
+    if(value === ''){
+        input.value = '';
+        return 0;
+    }
+
+    // إزالة الأصفار الزائدة بالبداية
+    value = String(parseInt(value, 10));
+
+    input.value = Number(value).toLocaleString('en-US');
+
+    return parseInt(value, 10);
+
+}
+
+// تحويل الرقم إلى كتابة عربية (مبلغ بالدينار العراقي)
+function numberToArabicWords(number){
+
+    number = parseInt(number);
+
+    if(!number || number <= 0) return '';
+
+    const ones = ['', 'واحد', 'اثنان', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة'];
+    const teens = ['عشرة', 'أحد عشر', 'اثنا عشر', 'ثلاثة عشر', 'أربعة عشر', 'خمسة عشر', 'ستة عشر', 'سبعة عشر', 'ثمانية عشر', 'تسعة عشر'];
+    const tens = ['', '', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون'];
+    const hundreds = ['', 'مئة', 'مئتان', 'ثلاثمئة', 'أربعمئة', 'خمسمئة', 'ستمئة', 'سبعمئة', 'ثمانمئة', 'تسعمئة'];
+
+    function threeDigits(n){
+
+        let str = '';
+        const h = Math.floor(n / 100);
+        const rem = n % 100;
+
+        if(h > 0){
+            str += hundreds[h];
+        }
+
+        if(rem > 0){
+
+            if(str) str += ' و';
+
+            if(rem >= 10 && rem < 20){
+                str += teens[rem - 10];
+            } else {
+
+                const t = Math.floor(rem / 10);
+                const o = rem % 10;
+                let tensPart = '';
+
+                if(o > 0) tensPart += ones[o];
+
+                if(t > 0){
+                    if(tensPart) tensPart += ' و';
+                    tensPart += tens[t];
+                }
+
+                str += tensPart;
+
+            }
+
+        }
+
+        return str;
+
+    }
+
+    const scales = [
+        { value: 1000000000, singular: 'مليار', dual: 'ملياران', plural: 'مليارات' },
+        { value: 1000000, singular: 'مليون', dual: 'مليونان', plural: 'ملايين' },
+        { value: 1000, singular: 'ألف', dual: 'ألفان', plural: 'آلاف' }
+    ];
+
+    let result = '';
+    let n = number;
+
+    for(const scale of scales){
+
+        const count = Math.floor(n / scale.value);
+        n = n % scale.value;
+
+        if(count > 0){
+
+            let part = '';
+
+            if(count === 1){
+                part = scale.singular;
+            } else if(count === 2){
+                part = scale.dual;
+            } else if(count >= 3 && count <= 10){
+                part = threeDigits(count) + ' ' + scale.plural;
+            } else {
+                part = threeDigits(count) + ' ' + scale.singular;
+            }
+
+            result += (result ? ' و' : '') + part;
+
+        }
+
+    }
+
+    if(n > 0){
+        result += (result ? ' و' : '') + threeDigits(n);
+    }
+
+    return result + ' دينار عراقي فقط لا غير';
+
+}
+
+function calculateRemaining(){
+
+    const sale = parseInt((document.getElementById('saleAmount').value || '0').replace(/,/g, '')) || 0;
+    const received = parseInt((document.getElementById('receivedAmount').value || '0').replace(/,/g, '')) || 0;
+    const remaining = sale - received;
+
+    const remainingField = document.getElementById('remainingAmount');
+    remainingField.value = remaining > 0 ? remaining.toLocaleString('en-US') : '0';
+
+    document.getElementById('remainingAmountText').value = remaining > 0 ? numberToArabicWords(remaining) : '';
+
+}
+
+document.getElementById('saleAmount').addEventListener('input', function(){
+
+    const raw = formatNumberInput(this);
+    document.getElementById('saleAmountText').value = numberToArabicWords(raw);
+    calculateRemaining();
+
+});
+
+document.getElementById('receivedAmount').addEventListener('input', function(){
+
+    const raw = formatNumberInput(this);
+    document.getElementById('receivedAmountText').value = numberToArabicWords(raw);
+    calculateRemaining();
+
+});
 
 function generateContractInfo(){
 
