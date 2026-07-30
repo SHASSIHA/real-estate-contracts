@@ -156,6 +156,19 @@ background:transparent;
 
 }
 
+.blank-line{
+
+display:inline-block;
+width:90%;
+border:none;
+border-bottom:1px dotted #000;
+outline:none;
+font-family:'Cairo',sans-serif;
+font-size:12px;
+background:transparent;
+
+}
+
 .signatures{
 
 display:grid;
@@ -528,17 +541,16 @@ display:none;
 
 لقد تم الاتفاق بين الطرفين على هذا العقد بالشروط الآتية:<br><br>
 
-<b>اولاً:</b> يعترف الطرف الاول (البائع) بأنه قد باع الى الطرف الثاني الملك المفصل فيما يلي:<br>
-<span id="propertySummary">.................................................................</span>
+<b>اولاً:</b> يعترف الطرف الاول (البائع) بأنه قد باع الى الطرف الثاني الملك المفصل بياناته في الحقول أعلاه (نوع العقار، الموقع، المحلة، رقم القطعة، والمساحة).
 <br><br>
 
-<b>ثانياً:</b> ان بدل البيع المتفق عليه هو مبلغ <span id="clauseSaleAmount">.................</span> (<span id="clauseSaleAmountText"></span>)، وصل منه الطرف الاول من الطرف الثاني مبلغ <span id="clauseReceivedAmount">.................</span> (<span id="clauseReceivedAmountText"></span>)، ويبقى بذمة الطرف الثاني مبلغ <span id="clauseRemainingAmount">.................</span> (<span id="clauseRemainingAmountText"></span>).
+<b>ثانياً:</b> ان بدل البيع المتفق عليه وقيمة العربون المقبوض من الطرف الثاني، وقصور البدل، هي المبينة في الحقول أعلاه، ويقبض الطرف الاول قصور البدل عند اكمال المعاملة والتقرير في دائرة التسجيل العقاري.
 <br><br>
 
-<b>ثالثاً:</b> اذا امتنع الطرف الاول عن اجراء التقرير او نكل عن البيع بأية صورة كانت فانه يكون ملزوماً بإعادة العربون الى الطرف الثاني، وما عدا ذلك يتعهد بتأدية تضمينات الى الطرف الثاني قدرها <input type="text" class="blank-input"> بدون حاجة الى انذار رسمي.
+<b>ثالثاً:</b> اذا امتنع الطرف الاول عن اجراء التقرير او نكل عن البيع بأية صورة كانت فانه يكون ملزوماً بإعادة العربون الى الطرف الثاني، وما عدا ذلك يتعهد بتأدية تضمينات الى الطرف الثاني قدرها <input type="text" class="blank-input" id="penalty1" inputmode="numeric" oninput="formatNumberInput(this)"> دينار بدون حاجة الى انذار رسمي.
 <br><br>
 
-<b>رابعاً:</b> يعترف الطرف الثاني بأنه قد قبل الشراء بالشروط المذكورة آنفاً ويتعهد بتأدية بدل البيع الى الطرف الاول عن اكمال المعاملة والتقرير في دائرة التسجيل العقاري، واذا نكل عن الشراء وتأدية قصور البدل فانه يتعهد بتأدية تضمينات قدرها <input type="text" class="blank-input"> بدون حاجة الى انذار رسمي وليس له حق بمطالبته بالعربون، وان الطرف الثاني له الحق ان يقرر الملك باسم من يشاء.
+<b>رابعاً:</b> يعترف الطرف الثاني بأنه قد قبل الشراء بالشروط المذكورة آنفاً ويتعهد بتأدية بدل البيع الى الطرف الاول عن اكمال المعاملة والتقرير في دائرة التسجيل العقاري، واذا نكل عن الشراء وتأدية قصور البدل فانه يتعهد بتأدية تضمينات قدرها <input type="text" class="blank-input" id="penalty2" inputmode="numeric" oninput="formatNumberInput(this)"> دينار بدون حاجة الى انذار رسمي وليس له حق بمطالبته بالعربون، وان الطرف الثاني له الحق ان يقرر الملك باسم من يشاء.
 <br><br>
 
 <b>خامساً:</b> ان جميع الرسوم المقتضية للبيع وسائر المصاريف بعهدة الطرف
@@ -552,10 +564,16 @@ display:none;
 <b>سادساً:</b> رسوم الفك والانتقال والافراز والتوحيد والتصحيح وضريبة الملك هي في عهدة الطرف الاول.
 <br><br>
 
-<b>سابعاً:</b> يتعهد الطرفان بأن يدفع كل واحد منهما دلالية قدرها <input type="text" class="blank-input-small"> بالمائة الى الدلال <input type="text" class="blank-input"> الذي توسط بعقد البيع، وبمجرد التوقيع على هذه المقاولة، واذا نكل احد الطرفين عن تنفيذ شروط هذا العقد يتعهد بتأدية ضعفي الدلالية المذكورة أعلاه، كما وانه في حالة وقوع تراضٍ بين الطرفين على ابطال هذا العقد فأنهما يكونان ملزومين بتأديتهما الدلالية المذكورة مهما بلغت.
+<b>سابعاً:</b> يتعهد الطرفان بأن يدفع كل واحد منهما دلالية قدرها <input type="text" class="blank-input-small" inputmode="numeric" placeholder="0"> بالمائة الى الدلال <input type="text" class="blank-input" placeholder="اسم الدلال"> الذي توسط بعقد البيع، وبمجرد التوقيع على هذه المقاولة، واذا نكل احد الطرفين عن تنفيذ شروط هذا العقد يتعهد بتأدية ضعفي الدلالية المذكورة أعلاه، كما وانه في حالة وقوع تراضٍ بين الطرفين على ابطال هذا العقد فأنهما يكونان ملزومين بتأديتهما الدلالية المذكورة مهما بلغت.
 <br><br>
 
 فبناءً على حصول التراضي والايجاب والقبول حُرر هذا العقد في <span id="clauseDate"></span> الساعة <span id="clauseTime"></span>.
+<br><br>
+
+<b><u>فقرات اضافية:</u></b><br>
+1/ <input type="text" class="blank-line"><br>
+2/ <input type="text" class="blank-line"><br>
+3/ <input type="text" class="blank-line">
 <br><br>
 
 الملاحظات:<br>
@@ -680,31 +698,7 @@ document.getElementById("area_size").value = data.area_size;
 
 }
 
-updatePropertySummary();
-
 }
-
-// تجميع وصف العقار تلقائياً داخل البند الاول من شروط العقد
-function updatePropertySummary(){
-
-const type = document.getElementById('propertyType').value.trim() || '.......';
-const province = document.getElementById('province').value.trim() || '.......';
-const district = document.getElementById('district').value.trim() || '.......';
-const area = document.getElementById('area').value.trim() || '.......';
-const mahalla = document.getElementById('mahalla').value.trim() || '.......';
-const plot = document.getElementById('plotNumber').value.trim() || '.......';
-const size = document.getElementById('area_size').value.trim() || '.......';
-
-document.getElementById('propertySummary').innerText =
-`عبارة عن (${type}) كائن في محافظة ${province} / قضاء أو ناحية ${district} / منطقة ${area}، محلة رقم ${mahalla}، رقم الدار أو القطعة ${plot}، وبمساحة قدرها ${size} م²، مع كافة لواحقه وملحقاته.`;
-
-}
-
-['propertyType','province','district','area','mahalla','plotNumber','area_size'].forEach(function(id){
-
-document.getElementById(id).addEventListener('input', updatePropertySummary);
-
-});
 
 // تنسيق الرقم بإضافة فواصل الآلاف أثناء الكتابة
 function formatNumberInput(input){
@@ -829,35 +823,6 @@ function calculateRemaining(){
 
     document.getElementById('remainingAmountText').value = remaining > 0 ? numberToArabicWords(remaining) : '';
 
-    updateClauseAmounts();
-
-}
-
-// تحديث نص البند الثاني (بدل البيع) تلقائياً من حقول المبالغ
-function updateClauseAmounts(){
-
-const saleNum = parseInt((document.getElementById('saleAmount').value || '0').replace(/,/g, '')) || 0;
-const receivedNum = parseInt((document.getElementById('receivedAmount').value || '0').replace(/,/g, '')) || 0;
-const remainingNum = parseInt((document.getElementById('remainingAmount').value || '0').replace(/,/g, '')) || 0;
-
-document.getElementById('clauseSaleAmount').innerText =
-saleNum > 0 ? (saleNum.toLocaleString('en-US') + ' دينار عراقي') : '.................';
-
-document.getElementById('clauseSaleAmountText').innerText =
-saleNum > 0 ? numberToArabicWords(saleNum) : '';
-
-document.getElementById('clauseReceivedAmount').innerText =
-receivedNum > 0 ? (receivedNum.toLocaleString('en-US') + ' دينار عراقي') : '.................';
-
-document.getElementById('clauseReceivedAmountText').innerText =
-receivedNum > 0 ? numberToArabicWords(receivedNum) : '';
-
-document.getElementById('clauseRemainingAmount').innerText =
-remainingNum > 0 ? (remainingNum.toLocaleString('en-US') + ' دينار عراقي') : '.................';
-
-document.getElementById('clauseRemainingAmountText').innerText =
-remainingNum > 0 ? numberToArabicWords(remainingNum) : '';
-
 }
 
 document.getElementById('saleAmount').addEventListener('input', function(){
@@ -933,8 +898,6 @@ document.getElementById("clauseTime").innerText = `${hours}:${minutes}`;
 }
 
 generateContractInfo();
-updatePropertySummary();
-updateClauseAmounts();
 
 </script>
 
